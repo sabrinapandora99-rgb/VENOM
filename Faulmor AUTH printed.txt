@@ -1,0 +1,367 @@
+pcall(function()
+  local _s = [[st.1.ffa-94b9f6c4-e385-432c-8059-6ea41dc31595-0ba22ba1.94b9f6c4-e385-432c-8059-6ea41dc31595.090cd1bd82edc417f61da6fbedda9a3a.0.1791511075.1791511375.1.64f624cb24d6b379.ef870ababdaf475f6337b0d8f10eb04ee1cf4aebfdb543d0fe802f32749e5da9]]
+  _G.FAULMOR_SESSION = _s
+  if type(getgenv) == "function" then
+    local ge = getgenv()
+    if type(ge) == "table" then ge.FAULMOR_SESSION = _s end
+  end
+end)
+local _DIAG = false
+local _rw, _rp = warn, print
+local warn = _DIAG and warn or function(m, ...) if type(m) == 'string' and m:sub(1, 10) == '[fm] DIAG ' then return end return _rw(m, ...) end
+local print = _DIAG and print or function(m, ...) if type(m) == 'string' and m:sub(1, 10) == '[fm] DIAG ' then return end return _rp(m, ...) end
+warn('[fm] DIAG S2: stage2 started')
+print('[fm] DIAG S2: stage2 started')
+local _env = (type(getgenv) == 'function' and getgenv()) or _G
+local _G = (type(_env) == 'table' and _env) or _G
+local _LS
+do
+  local _c = {}
+  local function _a(f) if type(f) == 'function' then _c[#_c + 1] = f end end
+  if type(_G) == 'table' then _a(rawget(_G, 'loadstring')); _a(rawget(_G, 'load')) end
+  _a(loadstring); _a(load)
+  local _ic = (type(_G) == 'table' and rawget(_G, 'iscclosure')) or nil
+  if type(_ic) ~= 'function' and type(iscclosure) == 'function' then _ic = iscclosure end
+  if type(_ic) == 'function' then
+    for _i = 1, #_c do
+      local _ok, _r = pcall(_ic, _c[_i])
+      if _ok and _r == true then _LS = _c[_i] break end
+    end
+  end
+  _LS = _LS or _c[1]
+end
+local hs = nil
+if type(game) ~= 'nil' and type(game.GetService) == 'function' then
+  pcall(function() hs = game:GetService('HttpService') end)
+end
+
+local function _transport(url, method, body, headers)
+    local _req = nil
+    if type(_G) == 'table' and type(_G.request) == 'function' then _req = _G.request end
+    if not _req and type(syn) == 'table' and type(syn.request) == 'function' then _req = syn.request end
+    if not _req and type(http) == 'table' and type(http.request) == 'function' then _req = http.request end
+    if not _req and type(fluxus) == 'table' and type(fluxus.request) == 'function' then _req = fluxus.request end
+    if _req then
+        warn('[fm] DIAG S2: transport via request() family')
+        local success, response = pcall(_req, {
+            Url = url,
+            Method = method,
+            Headers = headers or {['Content-Type'] = 'application/json'},
+            Body = body
+        })
+        if not success then
+            warn('[fm] DIAG S2: request() error: ' .. tostring(response))
+        elseif type(response) == 'table' then
+            local sc = response.StatusCode or response.Status or response.status_code or 0
+            local b = response.Body or response.body or response.Data or response.data
+            warn('[fm] DIAG S2: request() returned status=' .. tostring(sc) .. ' body_type=' .. type(b))
+            if b ~= nil then
+                return tostring(b or ''), true, tonumber(sc) or 0
+            end
+            warn('[fm] DIAG S2: request() table had no Body — falling through')
+        else
+            warn('[fm] DIAG S2: request() odd response type=' .. type(response))
+        end
+    else
+        warn('[fm] DIAG S2: no request() family, trying HttpService')
+    end
+
+    if hs and type(hs.PostAsync) == 'function' and type(hs.GetAsync) == 'function' then
+        warn('[fm] DIAG S2: transport via HttpService')
+        if method == 'POST' then
+            local success, response = pcall(hs.PostAsync, hs, url, body, Enum.HttpContentType.ApplicationJson, false)
+            if success then return tostring(response or ''), true, 200 end
+            warn('[fm] DIAG S2: HttpService PostAsync failed: ' .. tostring(response))
+            return tostring(response), false, 500
+        else
+            local success, response = pcall(hs.GetAsync, hs, url, true)
+            if success then return tostring(response or ''), true, 200 end
+            warn('[fm] DIAG S2: HttpService GetAsync failed: ' .. tostring(response))
+            return tostring(response), false, 500
+        end
+    end
+    warn('[fm] DIAG S2: no usable transport available')
+    return '', false, 0
+end
+
+local function gethwid()
+  local h = 'unknown'
+  if type(game) ~= 'nil' and type(game.GetService) == 'function' then
+    pcall(function()
+      local ra = game:GetService('RbxAnalyticsService')
+      if ra and type(ra.GetClientId) == 'function' then
+        local candidate = ra:GetClientId()
+        if type(candidate) == 'string' and candidate ~= '' then h = candidate end
+      end
+    end)
+  end
+  return tostring(h or 'unknown')
+end
+
+local key = ''
+if type(_G) == 'table' and type(_G.FAULMOR_KEY) == 'string' then key = _G.FAULMOR_KEY end
+if key == '' and type(_G) == 'table' and type(_G.script_key) == 'string' then key = _G.script_key end
+if key == '' and type(getgenv) == 'function' then
+  local ge = getgenv()
+  if type(ge) == 'table' then
+    if type(ge.FAULMOR_KEY) == 'string' then key = ge.FAULMOR_KEY end
+    if key == '' and type(ge.script_key) == 'string' then key = ge.script_key end
+  end
+end
+key = tostring(key or '')
+
+local hwid = gethwid()
+local _exec_name = (type(identifyexecutor) == 'function' and identifyexecutor()) or 'Unknown'
+_exec_name = tostring(_exec_name or 'Unknown')
+local _Players = nil
+if type(game) ~= 'nil' and type(game.GetService) == 'function' then
+  pcall(function() _Players = game:GetService('Players') end)
+end
+local _lp = _Players and _Players.LocalPlayer
+local _rblx_user = tostring((_lp and _lp.Name) or 'Unknown')
+local _rblx_uid = tostring((_lp and _lp.UserId) or 0)
+local _rblx_pid = tostring((game ~= nil and game.PlaceId) or 0)
+local _rblx_jid = tostring((game ~= nil and game.JobId) or '')
+
+local _fs = ''
+if type(_G) == 'table' and type(_G.FAULMOR_SESSION) == 'string' then _fs = _G.FAULMOR_SESSION end
+if _fs == '' and type(getgenv) == 'function' then
+  local ge = getgenv()
+  if type(ge) == 'table' and type(ge.FAULMOR_SESSION) == 'string' then _fs = ge.FAULMOR_SESSION end
+end
+_fs = tostring(_fs or '')
+
+local _delivery_token = [[]]
+-- Resolve exec URL: substituted value, else hard production fallback (never leave placeholder).
+local _EXEC_URL = tostring('https://faulmor.site/api/public/exec' or '')
+if _EXEC_URL == '' or _EXEC_URL == 'https://faulmor.site/api/public/exec' or not _EXEC_URL:find('^https?://', 1) then
+  _EXEC_URL = 'https://faulmor.site/api/public/exec'
+end
+local _diag_url = _EXEC_URL:gsub('/api/public/exec$', '/api/public/diag')
+local function _trace(msg, detail)
+  if not _DIAG then return end
+  pcall(function()
+    if not hs or type(hs.JSONEncode) ~= 'function' then return end
+    local payload = hs:JSONEncode({stage = 'stage2', msg = msg, hash = '14cd72f5a89631b57e1606898ee891e2', detail_len = #tostring(detail or '')})
+    _transport(_diag_url, 'POST', payload)
+  end)
+end
+_trace('stage2_started', 'token_set=' .. tostring(#_delivery_token > 0))
+
+local _req_payload = {
+  k = key,
+  p = _delivery_token,
+  h = hwid,
+  l = '14cd72f5a89631b57e1606898ee891e2',
+  e = _exec_name,
+  u = _rblx_user,
+  r = _rblx_uid,
+  pi = _rblx_pid,
+  j = _rblx_jid,
+  t = '1791511075',
+  n = '374ee586304b7d7a',
+  s = '0fd97dfe21e4da200ea570588d0b5eed0200190a69f4d5ce52a856f8c57f3745',
+  fs = _fs,
+  x = '',
+  g = ''
+}
+
+local _req_body = ''
+if hs and type(hs.JSONEncode) == 'function' then
+  local _jsonOk, _jsonResult = pcall(hs.JSONEncode, hs, _req_payload)
+  if _jsonOk and type(_jsonResult) == 'string' then _req_body = _jsonResult end
+end
+if _req_body == '' then
+    warn('[fm] DIAG S2: JSONEncode unavailable or failed, aborting')
+    return
+end
+
+warn('[fm] DIAG S2: key_len=' .. tostring(#key) .. ' token_set=' .. tostring(#_delivery_token > 0) .. ' hwid_len=' .. tostring(#hwid) .. ' sess_len=' .. tostring(#_fs) .. ' body_len=' .. tostring(#_req_body))
+print('[fm] DIAG S2: about to POST exec')
+warn('[fm] DIAG S2: about to POST exec — if this hangs, server is still building (VM can take 30s-5min)')
+warn('[fm] DIAG S2: exec_url_len=' .. tostring(#_EXEC_URL) .. ' head=' .. tostring(_EXEC_URL:sub(1, 64)))
+local body, ok, status = _transport(_EXEC_URL, 'POST', _req_body)
+_trace('exec_response', 'ok=' .. tostring(ok) .. ';status=' .. tostring(status))
+
+if type(body) ~= 'string' then
+    warn('[fm] DIAG S2: transport returned non-string body type=' .. type(body))
+    body = ''
+end
+local blen = #body
+warn('[fm] DIAG S2: exec response ok=' .. tostring(ok) .. ' status=' .. tostring(status) .. ' body_len=' .. tostring(blen))
+print('[fm] DIAG S2: exec response ok=' .. tostring(ok) .. ' status=' .. tostring(status) .. ' body_len=' .. tostring(blen))
+
+if not body or blen == 0 then
+  _trace('exec_empty', 'status=' .. tostring(status))
+  warn('[fm] exec empty or failed')
+  return
+end
+
+-- Never loadstring transport error text (e.g. 'The current thread cannot...').
+local _st = tonumber(status) or 0
+if not ok or _st < 200 or _st >= 300 then
+  _trace('exec_transport_fail', 'ok=' .. tostring(ok) .. ';status=' .. tostring(status) .. ';head=' .. tostring((body or ''):sub(1, 48)))
+  warn('[fm] exec transport failed ok=' .. tostring(ok) .. ' status=' .. tostring(status) .. ' head=' .. tostring((body or ''):sub(1, 48)))
+  return
+end
+
+body = tostring(body or '')
+
+local head = body:sub(1, 12)
+if head:sub(1, 1) == '{' and body:find('"e"') then
+  warn('[fm] exec returned error envelope (body_len=' .. tostring(blen) .. ')')
+  return
+end
+
+if body:sub(1,6) == 'KICK::' then
+  local kick_src = body:sub(7)
+  local _load = _LS or (type(loadstring) == 'function' and loadstring) or (type(load) == 'function' and load)
+  if _load then
+    local fn, lerr = _load(kick_src, '=fm-kick')
+    if fn then pcall(fn) else warn('[fm] kick load error: ' .. tostring(lerr)) end
+  else
+    warn('[fm] kick blocked: loadstring/load missing')
+  end
+  return
+end
+
+local function _strip_leading_markers(src)
+  while true do
+    if src:sub(1, 9) == '--FAULMOR' or src:sub(1, 11) == '--PROTECTED' or src:sub(1, 12) == '-- PROTECTED' then
+      local nl = src:find(string.char(10), 1, true)
+      if not nl then break end
+      src = src:sub(nl + 1)
+    else
+      break
+    end
+  end
+  return src
+end
+do
+  if type(body) == 'string' and body:sub(1, 13) == '--FAULMORV4H ' then
+    local _ok_dec, _dec = pcall(function()
+      if type(bit32) ~= 'table' then error('no bit32') end
+      local band, bxor, lshift, rshift = bit32.band, bit32.bxor, bit32.lshift, bit32.rshift
+      local function _mask(x) return band(x, 4294967295) end
+      local function _mix(x)
+        x = _mask(x)
+        x = _mask(bxor(x, _mask(lshift(x, 13))))
+        x = bxor(x, rshift(x, 17))
+        x = _mask(bxor(x, _mask(lshift(x, 5))))
+        return _mask(x)
+      end
+      local function _seed(s)
+        local h = 2166136261
+        for i = 1, #s do
+          h = _mask(bxor(h, string.byte(s, i)))
+          h = _mix(h)
+        end
+        if h == 0 then h = 1 end
+        return h
+      end
+      local function _san(t)
+        if t == nil then return '' end
+        t = tostring(t)
+        t = t:gsub('^%s+', ''):gsub('%s+$', '')
+        t = t:gsub('^["\']', ''):gsub('["\']$', '')
+        t = t:gsub('[%s%c\127]', '')
+        local lo = t:lower()
+        if lo == 'nil' or lo == 'null' or lo == 'undefined' or lo == 'unknown' then return '' end
+        return t
+      end
+      local _nl = body:find(string.char(10), 1, true)
+      if not _nl then error('no header nl') end
+      local _hdr = body:sub(1, _nl - 1)
+      local _hex = body:sub(_nl + 1)
+      local _tag, _ts, _nonce, _len = _hdr:match('^(%-%-FAULMORV4H)%s+(%S+)%s+(%S+)%s+(%S+)$')
+      if not _tag then error('bad header') end
+      local _sk = _san(key); if _sk == '' then _sk = 'ffa' end
+      local _secret = 'faulmor:v3:hardened:' .. _sk .. ':' .. _san(hwid) .. ':' .. _san('14cd72f5a89631b57e1606898ee891e2')
+      local _state = _seed(_secret .. ':' .. _nonce)
+      local _out = {}
+      local _idx = 0
+      for i = 1, #_hex, 2 do
+        _idx = _idx + 1
+        local _e = tonumber(_hex:sub(i, i + 1), 16)
+        if not _e then error('bad hex') end
+        _state = _mix(_state)
+        local _kb = band(bxor(_state, rshift(_state, 8), rshift(_state, 16), rshift(_state, 24)), 255)
+        _out[_idx] = string.char(bxor(_e, _kb))
+      end
+      if tonumber(_len) ~= nil and _idx ~= tonumber(_len) then error('len mismatch') end
+      return table.concat(_out)
+    end)
+    if _ok_dec and type(_dec) == 'string' and #_dec > 0 then
+      body = _dec
+      warn('[fm] DIAG S2: V4H decrypted plaintext_len=' .. tostring(#body))
+    else
+      warn('[fm] DIAG S2: V4H decrypt failed: ' .. tostring(_dec))
+      return
+    end
+  end
+end
+body = _strip_leading_markers(body)
+local head = body:sub(1, 24)
+warn('[fm] DIAG S2: after marker strip, payload_len=' .. tostring(#body) .. ' head=' .. tostring(head) .. ' type=' .. type(body))
+
+local _load = _LS or (type(loadstring) == 'function' and loadstring) or (type(load) == 'function' and load)
+if not _load then
+  warn('[fm] critical: environment lacks loadstring/load')
+  return
+end
+
+local fn, lerr = _load(body, '=fm-exec')
+if not fn then
+  _trace('exec_load_error', tostring(lerr))
+  warn('[fm] DIAG S2: direct load error: ' .. tostring(lerr))
+  local el = tostring(lerr or '')
+  local startsWithReturn = head:match('^%s*return') ~= nil
+  local startsWithDo = head:match('^%s*do') ~= nil
+  local looksLikeIncompleteChunk = el:find('eof', 1, true) ~= nil or el:find('EOF', 1, true) ~= nil or el:find('expected.*end', 1) ~= nil
+  if not startsWithReturn and not startsWithDo and looksLikeIncompleteChunk then
+    warn('[fm] DIAG S2: trying function wrap for incomplete ordinary chunk')
+    local nl = string.char(10)
+    fn, lerr = _load(
+      'local function __fm_run(...)' .. nl .. body .. nl .. 'end' .. nl .. 'return __fm_run(...)',
+      '=fm-exec'
+    )
+  else
+    warn('[fm] DIAG S2: no wrapper fallback; payload boundary is protected')
+  end
+end
+if not fn then
+  warn('[fm] load error: ' .. tostring(lerr) .. ' head=' .. tostring(head))
+  _trace('exec_load_failed', tostring(lerr))
+  warn('[fm] load error: ' .. tostring(lerr) .. ' head=' .. tostring(head))
+  return
+end
+
+-- Run the chunk. Many obfuscators emit `return function() ... end` (factory)
+-- without calling it. xpcall succeeds and nothing visible runs — silent no-op.
+-- If the chunk returns a function, invoke it once.
+warn('[fm] DIAG S2: exec loadstring ok, running')
+local _tb = (type(debug) == 'table' and type(debug.traceback) == 'function' and debug.traceback) or function(msg) return msg end
+local _pack = table.pack or function(...) return { n = select('#', ...), ... } end
+local _results = _pack(xpcall(fn, function(m) return _tb(tostring(m), 2) end))
+local _ok = _results[1]
+if not _ok then
+  warn('[fm] runtime error: ' .. tostring(_results[2]))
+  _trace('exec_runtime_error', tostring(_results[2]))
+  return
+end
+local _ret = _results[2]
+warn('[fm] DIAG S2: chunk returned type=' .. type(_ret))
+if type(_ret) == 'function' then
+  warn('[fm] DIAG S2: invoking returned function')
+  local _ok2, _err2 = xpcall(_ret, function(m) return _tb(tostring(m), 2) end)
+  if not _ok2 then
+    warn('[fm] runtime error (returned fn): ' .. tostring(_err2))
+    _trace('exec_runtime_error', tostring(_err2))
+  else
+    warn('[fm] DIAG S2: exec finished ok (invoked return)')
+    _trace('exec_finished_ok', '')
+  end
+else
+  warn('[fm] DIAG S2: exec finished ok')
+  _trace('exec_finished_ok', '')
+end
