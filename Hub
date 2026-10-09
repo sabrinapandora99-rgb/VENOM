@@ -1,0 +1,523 @@
+--[[fmwm.1.ZmZhLTk0YjlmNmM0LWUzODUtNDMyYy04MDU5LTZlYTQxZGMzMTU5NS0wYmEyMmJhMXw5NGI5ZjZjNC1lMzg1LTQzMmMtODA1OS02ZWE0MWRjMzE1OTV8MDkwY2QxYmQ4MmVkYzQxN2Y2MWRhNmZiZWRkYTlhM2F8MTc5MTUxMTA3Nw.0c7c24e96ba9]]
+-- thin prelude
+pcall(function()
+  -- prelude
+  pcall(function() if _G._FAULMOR_DIAG then print('DIAG: PRELUDE_START') end end)
+  local _lO0lO = ""
+  local _lI1lI = "a7905c59-8e98-481f-85e2-04cde95a454c"
+  local _lOo0O = nil
+  local _l1i1l = nil
+  local _l0IiI = "free"
+  local _l1oO0 = nil
+  local _lI0o1 = 144
+  local _l0l0l = "Delta"
+  local _lI1i1 = false
+  local function _fm_hb_env()
+    local ok, e = pcall(function() return type(getgenv) == 'function' and getgenv() end)
+    if ok and type(e) == 'table' then return e end
+    local ok2, e2 = pcall(function() return type(getfenv) == 'function' and getfenv(0) end)
+    if ok2 and type(e2) == 'table' then return e2 end
+    return _G
+  end
+  do
+    local env=nil do local gg=nil local ok,g=pcall(function() return type(getgenv) == 'function' and getgenv() end) if ok and type(g)=='table' then gg=g end local function tr(l) if type(getfenv) == 'function' then local ok2,e=pcall(getfenv,l) if ok2 and type(e)=='table' then return e end end end env=tr(2) or tr(3) or gg or tr(1) or tr(0) or _G end
+    if type(env) == 'table' then
+      env.LRM_ScriptKey = _lO0lO
+      env.LRM_HWID = _lI1lI
+      env.LRM_LinkedDiscordID = _lOo0O
+      env.LRM_LinkedDiscordName = _l1i1l
+      env.LRM_KeyType = _l0IiI
+      env.LRM_KeyExpiresAt = _l1oO0
+      env.LRM_TotalExecutions = _lI0o1
+      env.LRM_Executor = _l0l0l
+      env.LRM_IsPremium = _lI1i1
+      local _spawn = (type(task) == 'table' and type(task.spawn) == 'function' and task.spawn) or (type(coroutine) == 'table' and type(coroutine.create) == 'function' and type(coroutine.resume) == 'function' and function(f) local co=coroutine.create(f); pcall(coroutine.resume, co) end)
+      local _wait = (type(task) == 'table' and type(task.wait) == 'function' and task.wait) or (type(wait) == 'function' and wait)
+      local _unpack = (type(table) == 'table' and type(table.unpack) == 'function' and table.unpack) or (type(unpack) == 'function' and unpack)
+      if _spawn then env.LRM_Spawn = _spawn end
+      if _wait then env.LRM_Wait = _wait end
+      if _unpack then env.LRM_Unpack = _unpack end
+    end
+  end
+  -- session
+  local _FM_SESS = { t = "st.1.fa4c9062-162f-47da-83e3-1cfe6d7b85d8.94b9f6c4-e385-432c-8059-6ea41dc31595.090cd1bd82edc417f61da6fbedda9a3a.0.1791511077.1791511377.1.ee7af447c64628d4.d0840e4510bf550641dbb70c189f40eb9c157e741ac3b4d71a319d8351aa712b", e = 1791511377, u = "https://faulmor.site/api/public/session/refresh", h = _lI1lI }
+  local _fm_spawn = (type(task) == 'table' and type(task.spawn) == 'function' and task.spawn) or (type(coroutine) == 'table' and type(coroutine.create) == 'function' and type(coroutine.resume) == 'function' and function(f) local co=coroutine.create(f); pcall(coroutine.resume, co) end)
+  local _fm_wait = (type(task) == 'table' and type(task.wait) == 'function' and task.wait) or (type(wait) == 'function' and wait)
+  if _fm_spawn and _fm_wait then
+    pcall(function() if _G._FAULMOR_DIAG then print('DIAG: PHASE=PRELUDE_INIT _fm_spawn=' .. type(_fm_spawn) .. ' _fm_wait=' .. type(_fm_wait)) end end)
+    pcall(_fm_spawn, function()
+    local hs; local ok, svc = pcall(function() return type(game) == 'table' and type(game.GetService) == 'function' and game:GetService('HttpService') end); if ok and svc then hs = svc end
+    if not hs then return end
+    while true do
+      local now = os.time()
+      local left = _FM_SESS.e - now
+      if left <= 30 then
+        local body = '{"token":"' .. _FM_SESS.t .. '","hwid":"' .. _FM_SESS.h .. '","script_key":"' .. _lO0lO .. '"}'
+        local ok2, resp = pcall(hs.PostAsync, hs, _FM_SESS.u, body, 2, 'application/json')
+        if ok2 and type(resp) == 'string' then
+          local nt = resp:match('"token"%s*:%s*"([^"]+)"')
+          local ne = tonumber(resp:match('"exp"%s*:%s*(%d+)'))
+          if nt and ne then _FM_SESS.t = nt; _FM_SESS.e = ne end
+        end
+        _fm_wait(15)
+      else
+        _fm_wait(math.max(5, left - 30))
+      end
+    end
+  end)
+  end
+  do local _e=_fm_hb_env(); if type(_e)=='table' then local _old=_e["__fmbh"]; if type(_old)=='table' then _old.enabled=false end; _e["__fmbh"]=nil end end
+  -- end prelude
+
+end)
+--[[
+    VENOM DUEL - Script completo v8.0.5
+    CAMBIOS v8.0.5:
+    - ❌ Steal Mode eliminado (siempre V2 bloqueado)
+    - ✅ Barra de Steal con imagen de fondo 109443898978389
+    - ✅ Fondo negro INVISIBLE
+    - ✅ Sin Discord en la barra de steal
+    - ✅ FPS + MS grandes (TextSize 22)
+    - ✅ Barra gris + rosa neón
+]]
+
+skipIntroEnabled = true
+if _G.VENOMDuelRunning then return end
+_G.VENOMDuelRunning = true
+
+repeat task.wait() until game:IsLoaded()
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UIS = game:GetService("UserInputService")
+local TS = game:GetService("TweenService")
+local Lighting = game:GetService("Lighting")
+local HS = game:GetService("HttpService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local CoreGui = game:GetService("CoreGui")
+local SoundService = game:GetService("SoundService")
+local LP = Players.LocalPlayer
+local camera = workspace.CurrentCamera
+
+local _tick     = tick
+local _clamp    = math.clamp
+local _floor    = math.floor
+local _abs      = math.abs
+local _huge     = math.huge
+local _sqrt     = math.sqrt
+local _V3new    = Vector3.new
+local _V3zero   = Vector3.zero
+local _CFnew    = CFrame.new
+local _CFlookAt = CFrame.lookAt
+
+local _GetPlayersCached
+do
+    local cache, cacheTime = nil, 0
+    _GetPlayersCached = function()
+        local now = _tick()
+        if cache and now - cacheTime < 0.03 then return cache end
+        cache = Players:GetPlayers()
+        cacheTime = now
+        return cache
+    end
+end
+
+local function waitForCharReady(char, timeout)
+    timeout = timeout or 5
+    local deadline = _tick() + timeout
+    while (not char) or (not char.Parent)
+          or (not char:FindFirstChild("HumanoidRootPart"))
+          or (not char:FindFirstChildOfClass("Humanoid")) do
+        if _tick() > deadline then return false end
+        task.wait(0.05)
+    end
+    return true
+end
+
+NS = 60
+CS = 29
+LAGGER_SPEED = 15
+LAGGER_CARRY_SPEED = 24.5
+MEDUSA_COOLDOWN = 25
+BAT_AIMBOT_SPEED = 58
+BYPASS_AIMBOT_SPEED = 60
+CONFIG_FILE = "VENOMDuel.json"
+_isDraggingButton = false
+
+local PASTEL_PINK  = Color3.fromRGB(255, 170, 220)
+local NEON_PINK    = Color3.fromRGB(255, 20, 147)
+local BLACK_BG     = Color3.fromRGB(0, 0, 0)
+local BLACK_STROKE = Color3.fromRGB(0, 0, 0)
+local INACTIVE_BG  = Color3.fromRGB(0, 0, 0)
+local INACTIVE_TXT = Color3.fromRGB(255, 255, 255)
+local ACTIVE_TXT   = Color3.fromRGB(255, 255, 255)
+local GRAY_TRACK   = Color3.fromRGB(120, 120, 130)
+
+local BTN_STROKE_THICKNESS = 2
+local BTN_STROKE_TRANSPARENCY = 0
+local BTN_BG_DARK = Color3.fromRGB(0, 0, 0)
+
+aimbotMode = "V1"
+aimbotModeSetVisual = nil
+antiRagSetVisual = nil
+
+customSoundsEnabled     = false
+setCustomSoundsVisual   = nil
+
+batBypassEnabled = batBypassEnabled or false
+batBypassSetVisual = nil
+batBypassFloatingButton = nil
+batBypassFloatingPos = nil
+
+antiDieEnabled = antiDieEnabled or false
+antiFlingEnabled = antiFlingEnabled or false
+setAntiDieVisual = nil
+setAntiFlingVisual = nil
+
+_G.VENOMToolAssets = {}
+
+stealMode = "V2"
+local STEAL_MODE_LOCKED = "V2"
+V2_STOP_PERCENT = 70
+NORMAL_STOP_PERCENT = 90
+
+backgroundIndex = 1
+backgroundImages = {
+    "99136015050161",
+    "73857705647948", "86237559415852", "81474116937197",
+    "86668822094069", "108384375206363", "86791880986403", "126414648469223",
+    "77785523954153", "122815453745063", "77581705786454",
+    "86508089972764", "99747773532595", "139362780018712",
+    "81570223894096", "94047991986188", "118783198922289",
+    "101833990704596", "109527418380162",
+}
+
+backgroundImageTransparency = 0
+floatingButtonScale = 1
+progressBarScale = 1
+_floatingUIScales = {}
+
+titleLbl = nil
+miniBtn = nil
+bestScripLabel = nil
+VENOMLinkLabel = nil
+skipIntroToggleSet = nil
+
+local PRINTED_SOUND_PACKS = {
+    V1 = {
+        toggle = { "rbxassetid://6042053626", "rbxassetid://3398620867", "rbxassetid://255881176", "rbxassetid://12222208" },
+        tab    = { "rbxassetid://3398620867", "rbxassetid://6042053626", "rbxassetid://12222200" },
+        pitch = 1, volume = 2,
+    },
+    V2 = {
+        toggle = { "rbxassetid://9113822143", "rbxassetid://6895079853", "rbxassetid://12222208" },
+        tab    = { "rbxassetid://9113821597", "rbxassetid://6895079733", "rbxassetid://12222200" },
+        pitch = 1.15, volume = 1.6,
+    },
+}
+currentSoundPack = "V1"
+local _soundCache = {}
+
+local function getMenuSound(idList)
+    local key = table.concat(idList, "|")
+    local cached = _soundCache[key]
+    if cached and cached.Parent then return cached end
+    for _, id in ipairs(idList) do
+        local ok, sound = pcall(function()
+            local s = Instance.new("Sound")
+            s.Name = "VENOMMenuSound"
+            s.SoundId = id
+            s.Parent = SoundService
+            pcall(function() task.wait() end)
+            return s
+        end)
+        if ok and sound then
+            if sound.IsLoaded then _soundCache[key] = sound return sound end
+            pcall(function() sound:Destroy() end)
+        end
+    end
+    return nil
+end
+
+local function playMenuSound(kind)
+    pcall(function()
+        local pack = PRINTED_SOUND_PACKS[currentSoundPack] or PRINTED_SOUND_PACKS.V1
+        local sound = getMenuSound(kind == "tab" and pack.tab or pack.toggle)
+        if not sound then return end
+        local clone = sound:Clone()
+        clone.Volume = pack.volume or 1.5
+        local pitch = pack.pitch or 1
+        if kind == "tab" then pitch = pitch * 0.94 end
+        clone.PlaybackSpeed = pitch
+        clone.Parent = SoundService
+        clone:Play()
+        task.delay(3, function() pcall(function() clone:Destroy() end) end)
+    end)
+end
+
+function getThemeColor() return PASTEL_PINK end
+
+local _lastThemeUpdate = 0
+local _lastThemeColor = nil
+
+_G._VENOMDynamicSliders = _G._VENOMDynamicSliders or {}
+
+function _VENOMApplyThemeToSliders()
+    for _, entry in ipairs(_G._VENOMDynamicSliders) do
+        if entry and entry.applyThemeColor then
+            pcall(entry.applyThemeColor, PASTEL_PINK)
+        end
+    end
+end
+
+function updateAllUIThemeColors(color)
+    color = color or PASTEL_PINK
+    local now = _tick()
+    if color == _lastThemeColor and now - _lastThemeUpdate < 0.05 then return end
+    _lastThemeUpdate = now
+    _lastThemeColor = color
+
+    if progressFill then progressFill.BackgroundColor3 = NEON_PINK end
+    if pbFrame then
+        local border = pbFrame:FindFirstChildOfClass("UIStroke")
+        if border then border.Color = BLACK_STROKE end
+    end
+
+    if speedLabel then speedLabel.TextColor3 = color end
+    if bestScripLabel then bestScripLabel.TextColor3 = color end
+    if VENOMLinkLabel then VENOMLinkLabel.TextColor3 = color end
+
+    local char = LP.Character
+    if char then
+        local head = char:FindFirstChild("Head")
+        if head then
+            local bb = head:FindFirstChild("VENOMDuelSpeedIndicator")
+            if bb then
+                for _, child in ipairs(bb:GetChildren()) do
+                    if child:IsA("TextLabel") or child:IsA("TextButton") then
+                        child.TextColor3 = color
+                    end
+                end
+            end
+        end
+    end
+
+    if titleLbl then titleLbl.TextColor3 = color end
+    if miniBtn then miniBtn.TextColor3 = color end
+
+    for plr, billboard in pairs(espBillboardCache) do
+        if billboard and billboard.Parent then
+            local container = billboard:FindFirstChild("Frame")
+            if container then
+                local nameLbl = container:FindFirstChild("TextLabel")
+                if nameLbl then nameLbl.TextColor3 = color end
+            end
+        end
+    end
+
+    if tpBatFloatingButton then
+        paintFloatingBtn(tpBatFloatingButton:FindFirstChild("Frame"), batDesyncTpEnabled)
+    end
+
+    if batBypassFloatingButton then
+        paintFloatingBtn(batBypassFloatingButton:FindFirstChild("Frame"), batBypassEnabled)
+    end
+
+    for _, tab in ipairs(tabButtons or {}) do
+        if tab:GetAttribute("IsActiveTab") then
+            tab.TextColor3 = ACTIVE_TXT
+            tab.BackgroundColor3 = color
+        end
+    end
+
+    if MobilePanel then
+        local container = MobilePanel:FindFirstChild("FloatingPanel")
+        if container then
+            local btnContainer = container:FindFirstChild("ButtonsContainer")
+            if btnContainer then
+                for _, btn in ipairs(btnContainer:GetChildren()) do
+                    if btn:IsA("TextButton") and btn:FindFirstChild("BtnGrad") then
+                        paintFloatingBtn(btn, btn:GetAttribute("MobActive") == true)
+                    end
+                end
+            end
+        end
+    end
+
+    if lockBtn then lockBtn.TextColor3 = color end
+end
+
+speedMode = false
+antiRagdollEnabled = false
+antiRagdollVersion = "v1"
+jumpEnabled = false
+laggerToggled = false
+laggerCarryToggled = false
+medusaCounterEnabled = false
+batCounterEnabled = false
+autoLeftEnabled = false
+autoRightEnabled = false
+autoBatEnabled = false
+dropMode = 2
+removeAccessoriesEnabled = false
+stretchEnabled = false
+stretchFOV = 120
+stretchValue = 0.7
+uiLocked = true
+uiScaleValue = 66
+progressBarScaleValue = 55
+espEnabled = false
+antiLagEnabled = false
+ragdollTimerEnabled = false
+
+local espHighlightCache = {}
+local espBillboardCache = {}
+local espTracerCache = {}
+local espGlowCache = {}
+local espConn = nil
+
+antiLagDescConn = nil
+_antiLagStored = {}
+
+savedProgressBarPos = nil
+savedButtonPositions = {}
+savedMobilePanelPos = nil
+tpBatFloatingPos = nil
+batBypassFloatingPos = nil
+instaResetFloatingPos = nil
+instaResetFloatingButton = nil
+
+currentAnimPack = "Off"
+tryardHeartbeatConn = nil
+useCarrySystem = false
+lastMoveDir = _V3zero
+
+-- ============================================================
+-- MEDUSA WATCHER
+-- ============================================================
+local function getMedusaHitTime() return _G._VENOMMedusaHitTime or 0 end
+local function isMedusaHit() return (_tick() - getMedusaHitTime()) < 4 end
+local function setMedusaHitTime() _G._VENOMMedusaHitTime = _tick() end
+
+do
+    local _medusaWatcherConns = {}
+    local function _clearMedusaWatcher()
+        for _, c in ipairs(_medusaWatcherConns) do pcall(function() c:Disconnect() end) end
+        _medusaWatcherConns = {}
+    end
+    local function _hookPart(part)
+        if not part:IsA("BasePart") then return end
+        local c = part:GetPropertyChangedSignal("Anchored"):Connect(function()
+            if part.Anchored and part.Transparency == 1 then setMedusaHitTime() end
+        end)
+        table.insert(_medusaWatcherConns, c)
+    end
+    local function _attachMedusaWatcher(char)
+        _clearMedusaWatcher()
+        _G._VENOMMedusaHitTime = 0
+        if not char then return end
+        for _, part in ipairs(char:GetDescendants()) do _hookPart(part) end
+        table.insert(_medusaWatcherConns, char.DescendantAdded:Connect(function(part) _hookPart(part) end))
+    end
+    if LP.Character then _attachMedusaWatcher(LP.Character) end
+    LP.CharacterAdded:Connect(function(char) waitForCharReady(char, 10); _attachMedusaWatcher(char) end)
+end
+
+-- ============================================================
+-- RAGDOLL COUNTDOWN
+-- ============================================================
+_G._VENOMRCD = _G._VENOMRCD or {conn=nil, charConn=nil, endTime=0, seconds=2.6}
+ragdollCountdownLabel = nil
+ragdollCountdownEnabled = false
+
+function hookRagdollCountdown(char)
+    if _G._VENOMRCD.conn then pcall(function() _G._VENOMRCD.conn:Disconnect() end); _G._VENOMRCD.conn = nil end
+    if _G._VENOMRCD.charConn then pcall(function() _G._VENOMRCD.charConn:Disconnect() end); _G._VENOMRCD.charConn = nil end
+    if not ragdollCountdownEnabled then return end
+    local hum = char:FindFirstChildOfClass("Humanoid") or char:WaitForChild("Humanoid", 4)
+    if not hum then return end
+    local function beginCountdown()
+        local duration = isMedusaHit() and 3.6 or _G._VENOMRCD.seconds
+        _G._VENOMRCD.endTime = _tick() + duration
+        if ragdollCountdownLabel then ragdollCountdownLabel.Visible = true end
+    end
+    local function isRagdollStateForCountdown()
+        local st = hum:GetState()
+        return hum.PlatformStand or st == Enum.HumanoidStateType.Physics or st == Enum.HumanoidStateType.Ragdoll
+    end
+    _G._VENOMRCD.charConn = hum.StateChanged:Connect(function(_, newState)
+        if newState == Enum.HumanoidStateType.Physics or newState == Enum.HumanoidStateType.Ragdoll then beginCountdown() end
+    end)
+    _G._VENOMRCD.conn = RunService.RenderStepped:Connect(function()
+        if not ragdollCountdownEnabled then
+            if _G._VENOMRCD.conn then pcall(function() _G._VENOMRCD.conn:Disconnect() end); _G._VENOMRCD.conn = nil end
+            if ragdollCountdownLabel then ragdollCountdownLabel.Visible = false; ragdollCountdownLabel.Text = "" end
+            return
+        end
+        if not ragdollCountdownLabel or not ragdollCountdownLabel.Parent then return end
+        if isRagdollStateForCountdown() and _G._VENOMRCD.endTime < _tick() then beginCountdown() end
+        local left = math.max(0, _G._VENOMRCD.endTime - _tick())
+        if left > 0 then
+            ragdollCountdownLabel.Visible = true
+            ragdollCountdownLabel.Text = string.format("RAGDOLL %.1f", left)
+            ragdollCountdownLabel.TextColor3 = left <= 1 and Color3.fromRGB(255, 230, 90) or getThemeColor()
+        else
+            ragdollCountdownLabel.Visible = false
+            ragdollCountdownLabel.Text = ""
+        end
+    end)
+end
+
+-- ============================================================
+-- ANTI FLING
+-- ============================================================
+local _antiFlingState = { connection = nil, threshold = 80, spinThreshold = 40 }
+local _ANTI_FLING_DRIVE_GRACE = 0.3
+
+local function _afHubSpeedLive()
+    local live = _G.__VENOMLiveSpeed
+    if type(live) ~= "table" then return false end
+    local stamp, speed = tonumber(live.t), tonumber(live.v)
+    if not stamp or not speed or speed <= 0 then return false end
+    return (os.clock() - stamp) <= _ANTI_FLING_DRIVE_GRACE
+end
+
+local function _afOwnMoverActive()
+    if autoBatEnabled then return true end
+    if autoLeftEnabled or autoRightEnabled then return true end
+    if _G._VENOMBatBypass and _G._VENOMBatBypass.enabled then return true end
+    if batDesyncTpEnabled then return true end
+    return false
+end
+
+function startAntiFling()
+    if _antiFlingState.connection then return end
+    antiFlingEnabled = true
+    _antiFlingState.connection = RunService.Heartbeat:Connect(function()
+        if not antiFlingEnabled then return end
+        local character = LP.Character
+        if not character then return end
+        local root = character:FindFirstChild("HumanoidRootPart")
+        if not root then return end
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid and (humanoid.Health <= 0 or humanoid.SeatPart) then return end
+        if dropActive or _G.IsDropping then return end
+        if _afOwnMoverActive() then return end
+        if _afHubSpeedLive() then return end
+        local velocity = root.AssemblyLinearVelocity
+        local flat = Vector3.new(velocity.X, 0, velocity.Z)
+        if flat.Magnitude > _antiFlingState.threshold then
+            pcall(function()
+                root.AssemblyLinearVelocity = Vector3.new(0, velocity.Y, 0)
+                root.AssemblyAngularVelocity = Vector3.zero
+            end)
+            return
+        end
+        if root.AssemblyAngularVelocity.Magnitude > _antiFlingState.spinThreshold then
+            pcall(function() root.AssemblyAngularVelocity = Vector3.zero end)
+        end
+    end)
+end
+
+function 
